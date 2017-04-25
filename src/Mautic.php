@@ -22,7 +22,7 @@ class Mautic
      * 
      * @var Contact
      */
-	protected $contact;
+    protected $contact;
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ class Mautic
      */
     public function __construct($baseUrl)
     {
-    	$this->baseUrl = rtrim(trim($baseUrl), '/');
+        $this->baseUrl = rtrim(trim($baseUrl), '/');
         $this->contact = new Contact();
     }
 

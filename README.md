@@ -20,9 +20,9 @@ require __DIR__.'/vendor/autoload.php';
 $mautic = new \MauticFormSubmit\Mautic('https://mymautic.com');
 $form = $mautic->getForm(342);
 $result = $form->submit(
-	[
-		'f_email' => 'john@doe.email',
-	]
+    [
+        'f_email' => 'john@doe.email',
+    ]
 );
 ```
 

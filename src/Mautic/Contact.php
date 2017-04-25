@@ -7,87 +7,87 @@ namespace Escopecz\MauticFormSubmit\Mautic;
  */
 class Contact
 {
-	/**
-	 * Mautic contact ID
-	 * 
-	 * @var int
-	 */
-	protected $id;
+    /**
+     * Mautic contact ID
+     * 
+     * @var int
+     */
+    protected $id;
 
-	/**
-	 * Mautic contact IP address
-	 * 
-	 * @var string
-	 */
-	protected $ip;
+    /**
+     * Mautic contact IP address
+     * 
+     * @var string
+     */
+    protected $ip;
 
-	/**
-	 * Constructor
-	 *
-	 * @param int    $id will be taken from $_COOKIE if not provided
-	 * @param string $ip will be taken from $_SERVER if not provided
-	 */
-	public function __construct($id = null, $ip = null)
-	{
-		if ($id === null) {
-			$id = $this->getIdFromCookie();
-		}
+    /**
+     * Constructor
+     *
+     * @param int    $id will be taken from $_COOKIE if not provided
+     * @param string $ip will be taken from $_SERVER if not provided
+     */
+    public function __construct($id = null, $ip = null)
+    {
+        if ($id === null) {
+            $id = $this->getIdFromCookie();
+        }
 
-		if ($ip === null) {
-			$ip = $this->getIpFromServer();
-		}
+        if ($ip === null) {
+            $ip = $this->getIpFromServer();
+        }
 
-		$this->id = (int) $id;
-		$this->ip = $ip;
-	}
+        $this->id = (int) $id;
+        $this->ip = $ip;
+    }
 
-	/**
-	 * Returns Contact ID
-	 * 
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * Returns Contact ID
+     * 
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * Returns Contact IP address
-	 * 
-	 * @return string
-	 */
-	public function getIp()
-	{
-		return $this->ip;
-	}
+    /**
+     * Returns Contact IP address
+     * 
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
+    }
 
-	/**
-	 * Gets Contact ID from $_COOKIE
-	 * 
-	 * @return int|null
-	 */
-	public function getIdFromCookie()
-	{
-		if (isset($_COOKIE['mtc_id'])) {
-        	return (int) $_COOKIE['mtc_id'];
+    /**
+     * Gets Contact ID from $_COOKIE
+     * 
+     * @return int|null
+     */
+    public function getIdFromCookie()
+    {
+        if (isset($_COOKIE['mtc_id'])) {
+            return (int) $_COOKIE['mtc_id'];
         } elseif (isset($_COOKIE['mautic_session_id'])) {
-        	$mauticSessionId = $_COOKIE['mautic_session_id'];
-        	if (isset($_COOKIE[$mauticSessionId])) {
-        		return (int) $_COOKIE[$mauticSessionId];
-        	}
+            $mauticSessionId = $_COOKIE['mautic_session_id'];
+            if (isset($_COOKIE[$mauticSessionId])) {
+                return (int) $_COOKIE[$mauticSessionId];
+            }
         }
 
         return null;
-	}
+    }
 
-	/**
-	 * Guesses IP address from $_SERVER
-	 * 
-	 * @return string
-	 */
-	public function getIpFromServer()
+    /**
+     * Guesses IP address from $_SERVER
+     * 
+     * @return string
+     */
+    public function getIpFromServer()
     {
-    	$ipHolders = array(
+        $ipHolders = array(
             'HTTP_CLIENT_IP',
             'HTTP_X_FORWARDED_FOR',
             'HTTP_X_FORWARDED',

@@ -12,12 +12,12 @@ class Form
     /**
      * @var Mautic
      */
-	protected $mautic;
+    protected $mautic;
 
     /**
      * @var int
      */
-	protected $formId;
+    protected $formId;
 
     /**
      * Constructor
@@ -27,8 +27,8 @@ class Form
      */
     public function __construct(Mautic $mautic, $formId)
     {
-    	$this->mautic = $mautic;
-    	$this->formId = (int) $formId;
+        $this->mautic = $mautic;
+        $this->formId = (int) $formId;
     }
 
     /**
@@ -41,7 +41,7 @@ class Form
      */
     public function submit(array $data)
     {
-    	$response = [];
+        $response = [];
         $request = $this->prepareRequest($data);
 
         $ch = curl_init($request['url']);
@@ -66,9 +66,9 @@ class Form
         curl_close($ch);
 
         return [
-        	'$_COOKIE' => $_COOKIE,
-        	'request' => $request,
-        	'response' => $response,
+            '$_COOKIE' => $_COOKIE,
+            'request' => $request,
+            'response' => $response,
         ]; 
     }
 
@@ -120,6 +120,6 @@ class Form
      */
     protected function getFormUrl()
     {
-    	return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->formId);
+        return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->formId);
     }
 }

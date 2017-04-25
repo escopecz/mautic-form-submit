@@ -5,7 +5,7 @@ namespace Escopecz\MauticFormSubmit\Test\Mautic;
 use Escopecz\MauticFormSubmit\Mautic;
 use Escopecz\MauticFormSubmit\Mautic\Form;
 
-class MauticTest extends \PHPUnit_Framework_TestCase
+class FormTest extends \PHPUnit_Framework_TestCase
 {
     private $baseUrl = 'https://mymautic.com';
 

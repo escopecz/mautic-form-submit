@@ -38,7 +38,10 @@ composer test
 composer cs
 ```
 
-[Current status](https://travis-ci.org/escopecz/mautic-form-submit)
+### Current status
+
+[Travis](https://travis-ci.org/escopecz/mautic-form-submit)
+[Scrutinizer](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit)
 
 ## License
 

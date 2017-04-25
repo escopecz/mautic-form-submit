@@ -9,14 +9,14 @@ class Contact
 {
     /**
      * Mautic contact ID
-     * 
+     *
      * @var int
      */
     protected $id;
 
     /**
      * Mautic contact IP address
-     * 
+     *
      * @var string
      */
     protected $ip;
@@ -43,7 +43,7 @@ class Contact
 
     /**
      * Returns Contact ID
-     * 
+     *
      * @return int
      */
     public function getId()
@@ -53,7 +53,7 @@ class Contact
 
     /**
      * Returns Contact IP address
-     * 
+     *
      * @return string
      */
     public function getIp()
@@ -63,7 +63,7 @@ class Contact
 
     /**
      * Gets Contact ID from $_COOKIE
-     * 
+     *
      * @return int|null
      */
     public function getIdFromCookie()
@@ -82,7 +82,7 @@ class Contact
 
     /**
      * Guesses IP address from $_SERVER
-     * 
+     *
      * @return string
      */
     public function getIpFromServer()
@@ -101,7 +101,8 @@ class Contact
             if (!empty($_SERVER[$key])) {
                 $ip = $_SERVER[$key];
                 if (strpos($ip, ',') !== false) {
-                    // Multiple IPs are present so use the last IP which should be the most reliable IP that last connected to the proxy
+                    // Multiple IPs are present so use the last IP which should be
+                    // the most reliable IP that last connected to the proxy
                     $ips = explode(',', $ip);
                     array_walk($ips, create_function('&$val', '$val = trim($val);'));
                     $ip = end($ips);

@@ -12,21 +12,21 @@ class Mautic
 {
     /**
      * Mautic base (root) URL
-     * 
+     *
      * @var string
      */
     protected $baseUrl;
 
     /**
      * Mautic Contact
-     * 
+     *
      * @var Contact
      */
     protected $contact;
 
     /**
      * Constructor
-     * 
+     *
      * @param string $baseUrl
      */
     public function __construct($baseUrl)
@@ -37,7 +37,7 @@ class Mautic
 
     /**
      * Returns Mautic's base URL
-     * 
+     *
      * @return string
      */
     public function getBaseUrl()
@@ -47,9 +47,9 @@ class Mautic
 
     /**
      * Returns new Mautic Form representation object
-     * 
+     *
      * @param  int $id
-     * 
+     *
      * @return Form
      */
     public function getForm($id)
@@ -59,7 +59,7 @@ class Mautic
 
     /**
      * Sets the Mautic Contact if you want to replace the default one
-     * 
+     *
      * @param Contact $contact
      *
      * @return Mautic
@@ -73,7 +73,7 @@ class Mautic
 
     /**
      * Returns Mautic Contact representation object
-     * 
+     *
      * @return Contact
      */
     public function getContact()

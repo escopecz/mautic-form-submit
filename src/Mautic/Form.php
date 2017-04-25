@@ -21,7 +21,7 @@ class Form
 
     /**
      * Constructor
-     * 
+     *
      * @param Mautic $mautic
      * @param int    $formId
      */
@@ -34,9 +34,9 @@ class Form
     /**
      * Submit the $data array to the Mautic form
      * Returns array containing info about the request, response and cookie
-     * 
+     *
      * @param  array  $data
-     * 
+     *
      * @return array
      */
     public function submit(array $data)
@@ -69,14 +69,14 @@ class Form
             '$_COOKIE' => $_COOKIE,
             'request' => $request,
             'response' => $response,
-        ]; 
+        ];
     }
 
     /**
      * Prepares data for CURL request based on provided form data, $_COOKIE and $_SERVER
-     * 
+     *
      * @param  array $data
-     * 
+     *
      * @return array
      */
     protected function prepareRequest(array $data)
@@ -115,7 +115,7 @@ class Form
 
     /**
      * Builds the form URL
-     * 
+     *
      * @return string
      */
     protected function getFormUrl()

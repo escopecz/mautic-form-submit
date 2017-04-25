@@ -15,20 +15,22 @@ class Form
     protected $mautic;
 
     /**
+     * Form ID
+     *
      * @var int
      */
-    protected $formId;
+    protected $id;
 
     /**
      * Constructor
      *
      * @param Mautic $mautic
-     * @param int    $formId
+     * @param int    $id
      */
-    public function __construct(Mautic $mautic, $formId)
+    public function __construct(Mautic $mautic, $id)
     {
         $this->mautic = $mautic;
-        $this->formId = (int) $formId;
+        $this->id = (int) $id;
     }
 
     /**
@@ -86,7 +88,7 @@ class Form
         $contactIp = $contact->getIp();
         $request = [];
 
-        $data['formId'] = $this->formId;
+        $data['formId'] = $this->id;
 
         // return has to be part of the form data array so Mautic would accept the submission
         if (!isset($data['return'])) {
@@ -120,6 +122,16 @@ class Form
      */
     protected function getFormUrl()
     {
-        return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->formId);
+        return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->id);
+    }
+
+    /**
+     * Returns the Form ID
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

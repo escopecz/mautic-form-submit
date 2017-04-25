@@ -17,7 +17,7 @@ composer require escopecz/mautic-form-submit
 ```php
 require __DIR__.'/vendor/autoload.php';
 
-$mautic = new \MauticFormSubmit\Mautic('https://mymautic.com');
+$mautic = new \Escopecz\MauticFormSubmit\Mautic('https://mymautic.com');
 $form = $mautic->getForm(342);
 $result = $form->submit(
     [

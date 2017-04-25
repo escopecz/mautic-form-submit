@@ -31,6 +31,15 @@ $result = $form->submit(
 
 For working example see the `examples` dir.
 
+## Testing
+
+```
+composer test
+composer cs
+```
+
+[Current status](https://travis-ci.org/escopecz/mautic-form-submit)
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

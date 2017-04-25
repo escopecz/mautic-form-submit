@@ -1,6 +1,8 @@
 # PHP library for submitting Mautic Form from 3rd party app
 
-[![Software License][ico-license]](LICENSE.md)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit/badges/build.png?b=master)](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/escopecz/mautic-form-submit/?branch=master)
 
 Submitting a form can get handy if you want to process the data with your app, but you want to send them to Mautic too. Mautic can then run automated tasks triggered by the form submission. [Read more about it](https://medium.com/@jan_linhart/the-simplest-way-how-to-submit-a-form-data-to-mautic-1454d3afd005) in the original post.
 

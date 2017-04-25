@@ -95,7 +95,7 @@ class Form
             $data['return'] = '';
         }
 
-        $request['url'] = $this->getFormUrl();
+        $request['url'] = $this->getUrl();
         $request['data'] = ['mauticform' => $data];
 
         if ($contactId) {
@@ -120,7 +120,7 @@ class Form
      *
      * @return string
      */
-    public function getFormUrl()
+    public function getUrl()
     {
         return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->id);
     }

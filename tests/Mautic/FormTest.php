@@ -9,11 +9,20 @@ class MauticTest extends \PHPUnit_Framework_TestCase
 {
     private $baseUrl = 'https://mymautic.com';
 
-    function test_get_id()
+    function test_get_id_int_standalone()
     {
         $mautic = new Mautic($this->baseUrl);
         $formId = 3434;
         $form = new Form($mautic, $formId);
+
+        $this->assertSame($formId, $form->getId());
+    }
+
+    function test_get_id_int_in_mautic_object()
+    {
+        $mautic = new Mautic($this->baseUrl);
+        $formId = 3434;
+        $form = $mautic->getForm($formId);
 
         $this->assertSame($formId, $form->getId());
     }
@@ -36,5 +45,14 @@ class MauticTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($data['last_name'], $request['data']['mauticform']['last_name']);
         $this->assertSame($formId, $request['data']['mauticform']['formId']);
         $this->assertSame('', $request['data']['mauticform']['return']);
+    }
+
+    function test_get_url()
+    {
+        $mautic = new Mautic($this->baseUrl);
+        $formId = 3434;
+        $form = $mautic->getForm($formId);
+
+        $this->assertSame($this->baseUrl.'/form/submit?formId='.$formId, $form->getUrl());
     }
 }

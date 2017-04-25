@@ -81,7 +81,7 @@ class Form
      *
      * @return array
      */
-    protected function prepareRequest(array $data)
+    public function prepareRequest(array $data)
     {
         $contact = $this->mautic->getContact();
         $contactId = $contact->getId();
@@ -106,7 +106,7 @@ class Form
             $request['header'] = ["X-Forwarded-For: $contactIp"];
         }
 
-        if ($_SERVER['HTTP_REFERER']) {
+        if (isset($_SERVER['HTTP_REFERER'])) {
             $request['referer'] = $_SERVER["HTTP_REFERER"];
         }
 
@@ -120,7 +120,7 @@ class Form
      *
      * @return string
      */
-    protected function getFormUrl()
+    public function getFormUrl()
     {
         return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->id);
     }

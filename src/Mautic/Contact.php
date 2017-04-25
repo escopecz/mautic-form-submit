@@ -87,7 +87,8 @@ class Contact
      */
     public function getIpFromServer()
     {
-        $ipHolders = array(
+        $ip = '';
+        $ipHolders = [
             'HTTP_CLIENT_IP',
             'HTTP_X_FORWARDED_FOR',
             'HTTP_X_FORWARDED',
@@ -95,7 +96,7 @@ class Contact
             'HTTP_FORWARDED_FOR',
             'HTTP_FORWARDED',
             'REMOTE_ADDR'
-        );
+        ];
 
         foreach ($ipHolders as $key) {
             if (!empty($_SERVER[$key])) {

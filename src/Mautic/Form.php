@@ -119,7 +119,7 @@ class Form
      * @param  string $headers
      * @param  string $sessionId
      *
-     * @return string|null
+     * @return int|null
      */
     public function getContactIdFromHeader($headers, $sessionId)
     {

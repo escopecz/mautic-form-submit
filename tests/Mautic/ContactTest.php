@@ -106,5 +106,12 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         $_COOKIE['mautic_session_id'] = $sid;
 
         $this->assertSame($sid, $contact->getMauticSessionIdFromCookie());
+        unset($_COOKIE['mautic_session_id']);
+
+        $this->assertSame(null, $contact->getMauticSessionIdFromCookie());
+
+        $_COOKIE['mtc_sid'] = $sid;
+        $this->assertSame($sid, $contact->getMauticSessionIdFromCookie());
+        unset($_COOKIE['mtc_sid']);
     }
 }

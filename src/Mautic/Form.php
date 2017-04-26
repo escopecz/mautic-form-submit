@@ -58,6 +58,11 @@ class Form
             curl_setopt($ch, CURLOPT_REFERER, $request['referer']);
         }
 
+        if (isset($request['cookie'])) {
+            $ckfile = tempnam (sys_get_temp_dir(), 'mauticcookie');
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -84,9 +89,7 @@ class Form
     public function prepareRequest(array $data)
     {
         $contact = $this->mautic->getContact();
-        $contactId = $contact->getId();
-        $contactIp = $contact->getIp();
-        $request = [];
+        $request = ['header'];
 
         $data['formId'] = $this->id;
 
@@ -98,12 +101,16 @@ class Form
         $request['url'] = $this->getUrl();
         $request['data'] = ['mauticform' => $data];
 
-        if ($contactId) {
+        if ($contactId = $contact->getId()) {
             $request['data']['mtc_id'] = $contactId;
         }
 
-        if ($contactIp) {
-            $request['header'] = ["X-Forwarded-For: $contactIp"];
+        if ($contactIp = $contact->getIp()) {
+            $request['header'][] = "X-Forwarded-For: $contactIp";
+        }
+
+        if ($sessionId = $contact->getMauticSessionIdFromCookie()) {
+            $request['header'][] = "Cookie: mautic_session_id=$sessionId";
         }
 
         if (isset($_SERVER['HTTP_REFERER'])) {

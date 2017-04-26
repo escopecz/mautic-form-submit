@@ -91,6 +91,10 @@ class Contact
             return $_COOKIE['mautic_session_id'];
         }
 
+        if (isset($_COOKIE['mtc_sid'])) {
+            return $_COOKIE['mtc_sid'];
+        }
+
         return null;
     }
 

@@ -22,12 +22,20 @@ class Contact
     protected $ip;
 
     /**
+     * Mautic Session ID
+     *
+     * @var string
+     */
+    protected $sessionId;
+
+    /**
      * Constructor
      *
      * @param int    $id will be taken from $_COOKIE if not provided
      * @param string $ip will be taken from $_SERVER if not provided
+     * @param string $sessionId will be taken from $_COOKIE if not provided
      */
-    public function __construct($id = null, $ip = null)
+    public function __construct($id = null, $ip = null, $sessionId = null)
     {
         if ($id === null) {
             $id = $this->getIdFromCookie();
@@ -37,8 +45,13 @@ class Contact
             $ip = $this->getIpFromServer();
         }
 
+        if ($sessionId === null) {
+            $sessionId = $this->getMauticSessionIdFromCookie();
+        }
+
         $this->id = (int) $id;
         $this->ip = $ip;
+        $this->sessionId = $sessionId;
     }
 
     /**
@@ -54,11 +67,21 @@ class Contact
     /**
      * Returns Contact IP address
      *
-     * @return string
+     * @return string|null
      */
     public function getIp()
     {
         return $this->ip;
+    }
+
+    /**
+     * Returns Mautic Contact Session DI
+     *
+     * @return string|null
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
     }
 
     /**
@@ -96,6 +119,42 @@ class Contact
         }
 
         return null;
+    }
+
+    /**
+     * Set Mautic session ID to global cookie
+     *
+     * @param string $sessionId
+     *
+     * @return Contact
+     */
+    public function setSessionIdCookie($sessionId)
+    {
+        $this->sessionId = $sessionId;
+        $_COOKIE['mautic_session_id'] = $sessionId;
+        $_COOKIE['mtc_sid'] = $sessionId;
+
+        return $this;
+    }
+
+    /**
+     * Set Mautic Contact ID to global cookie
+     *
+     * @param string $contactId
+     *
+     * @return Contact
+     */
+    public function setIdCookie($contactId)
+    {
+        $this->id = $contactId;
+
+        $_COOKIE['mtc_id'] = $contactId;
+
+        if ($this->sessionId) {
+            $_COOKIE[$this->sessionId] = $contactId;
+        }
+
+        return $this;
     }
 
     /**

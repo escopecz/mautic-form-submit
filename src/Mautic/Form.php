@@ -59,7 +59,7 @@ class Form
         }
 
         if (isset($request['cookie'])) {
-            $ckfile = tempnam (sys_get_temp_dir(), 'mauticcookie');
+            $ckfile = tempnam(sys_get_temp_dir(), 'mauticcookie');
             curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
         }
 

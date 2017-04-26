@@ -62,9 +62,12 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 
     function test_get_id_from_cookie_method()
     {
+        $contact = new Contact;
+
+        $this->assertSame(null, $contact->getIdFromCookie());
+
         $contactId = 4344;
         $_COOKIE['mtc_id'] = $contactId;
-        $contact = new Contact;
 
         $this->assertSame($contactId, $contact->getIdFromCookie());
         unset($_COOKIE['mtc_id']);
@@ -82,11 +85,26 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 
     function test_get_ip_from_server_method()
     {
+        $contact = new Contact;
+
+        $this->assertSame('', $contact->getIpFromServer());
+
         $contactIp = '345.2.2.2';
         $_SERVER['REMOTE_ADDR'] = $contactIp;
-        $contact = new Contact;
 
         $this->assertSame($contactIp, $contact->getIpFromServer());
         unset($_SERVER['REMOTE_ADDR']);
+    }
+
+    function test_get_mautic_session_id_from_cookie()
+    {
+        $contact = new Contact;
+
+        $this->assertSame(null, $contact->getMauticSessionIdFromCookie());
+
+        $sid = 'kjsfk3j2jnfl2kj3rl2kj';
+        $_COOKIE['mautic_session_id'] = $sid;
+
+        $this->assertSame($sid, $contact->getMauticSessionIdFromCookie());
     }
 }

@@ -81,6 +81,20 @@ class Contact
     }
 
     /**
+     * Returns Mautic session ID if it exists in the cookie
+     *
+     * @return string|null
+     */
+    public function getMauticSessionIdFromCookie()
+    {
+        if (isset($_COOKIE['mautic_session_id'])) {
+            return $_COOKIE['mautic_session_id'];
+        }
+
+        return null;
+    }
+
+    /**
      * Guesses IP address from $_SERVER
      *
      * @return string

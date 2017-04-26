@@ -6,6 +6,10 @@
 
 Submitting a form can get handy if you want to process the data with your app, but you want to send them to Mautic too. Mautic can then run automated tasks triggered by the form submission. [Read more about it](https://medium.com/@jan_linhart/the-simplest-way-how-to-submit-a-form-data-to-mautic-1454d3afd005) in the original post.
 
+Since the new Mautic versions prefer cookie tracking over IP tracking which makes more tedious to submit the form as the tracked contact, this library will take care of the cookie sending via CURL. It will also listen the cookie from the response and updates the contact cookie with the values from the submit response. This way if the contact ID changes because of contact merge, the contact will continue browsing under the new contact ID.
+
+The automatic cookie handling requires that your form will be on a page tracked by the Mautic JS tracking which provides the Mautic contact cookie in the first place.
+
 ## Install
 
 ### Via Composer

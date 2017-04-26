@@ -43,6 +43,7 @@ class Form
      */
     public function submit(array $data)
     {
+        $originalCookie = $_COOKIE;
         $response = [];
         $request = $this->prepareRequest($data);
 
@@ -72,11 +73,67 @@ class Form
         $response['info'] = curl_getinfo($ch);
         curl_close($ch);
 
+        $contact = $this->mautic->getContact();
+
+        if ($sessionId = $this->getSessionIdFromHeader($response['header'])) {
+            $contact->setSessionIdCookie($sessionId);
+        }
+
+        if ($contactId = $this->getContactIdFromHeader($response['header'], $sessionId)) {
+            $contact->setIdCookie($contactId);
+        }
+
         return [
-            '$_COOKIE' => $_COOKIE,
+            'original_cookie' => $originalCookie,
+            'new_cookie' => $_COOKIE,
             'request' => $request,
             'response' => $response,
         ];
+    }
+
+    /**
+     * Finds the session ID hash in the response header
+     *
+     * @param  string $headers
+     *
+     * @return string|null
+     */
+    public function getSessionIdFromHeader($headers)
+    {
+        if (!$headers) {
+            return null;
+        }
+
+        preg_match("/mautic_session_id=(.+?);/", $headers, $matches);
+
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+
+        return null;
+    }
+
+    /**
+     * Finds the Mautic Contact ID hash in the response header
+     *
+     * @param  string $headers
+     * @param  string $sessionId
+     *
+     * @return string|null
+     */
+    public function getContactIdFromHeader($headers, $sessionId)
+    {
+        if (!$headers || !$sessionId) {
+            return null;
+        }
+
+        preg_match("/$sessionId=(.+?);/", $headers, $matches);
+
+        if (isset($matches[1])) {
+            return (int) $matches[1];
+        }
+
+        return null;
     }
 
     /**

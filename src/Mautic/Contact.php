@@ -140,18 +140,18 @@ class Contact
     /**
      * Set Mautic Contact ID to global cookie
      *
-     * @param string $contactId
+     * @param int $contactId
      *
      * @return Contact
      */
     public function setIdCookie($contactId)
     {
-        $this->id = $contactId;
+        $this->id = (int) $contactId;
 
-        $_COOKIE['mtc_id'] = $contactId;
+        $_COOKIE['mtc_id'] = $this->id;
 
         if ($this->sessionId) {
-            $_COOKIE[$this->sessionId] = $contactId;
+            $_COOKIE[$this->sessionId] = $this->id;
         }
 
         return $this;

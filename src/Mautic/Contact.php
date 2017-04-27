@@ -2,18 +2,13 @@
 
 namespace Escopecz\MauticFormSubmit\Mautic;
 
+use Escopecz\MauticFormSubmit\Mautic\Cookie;
+
 /**
  * Mautic Contact
  */
 class Contact
 {
-    /**
-     * Mautic contact ID
-     *
-     * @var int
-     */
-    protected $id;
-
     /**
      * Mautic contact IP address
      *
@@ -22,36 +17,21 @@ class Contact
     protected $ip;
 
     /**
-     * Mautic Session ID
+     * Mautic Cookie
      *
-     * @var string
+     * @var Cookie
      */
-    protected $sessionId;
+    protected $cookie;
 
     /**
      * Constructor
      *
-     * @param int    $id will be taken from $_COOKIE if not provided
-     * @param string $ip will be taken from $_SERVER if not provided
-     * @param string $sessionId will be taken from $_COOKIE if not provided
+     * @param Cookie $cookie
      */
-    public function __construct($id = null, $ip = null, $sessionId = null)
+    public function __construct(Cookie $cookie)
     {
-        if ($id === null) {
-            $id = $this->getIdFromCookie();
-        }
-
-        if ($ip === null) {
-            $ip = $this->getIpFromServer();
-        }
-
-        if ($sessionId === null) {
-            $sessionId = $this->getMauticSessionIdFromCookie();
-        }
-
-        $this->id = (int) $id;
-        $this->ip = $ip;
-        $this->sessionId = $sessionId;
+        $this->cookie = $cookie;
+        $this->ip = $this->getIpFromServer();
     }
 
     /**
@@ -61,7 +41,21 @@ class Contact
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->cookie->getContactId();
+    }
+
+    /**
+     * Set Mautic Contact ID to global cookie
+     *
+     * @param int $contactId
+     *
+     * @return Contact
+     */
+    public function setId($contactId)
+    {
+        $this->cookie->setContactId($contactId);
+
+        return $this;
     }
 
     /**
@@ -75,50 +69,25 @@ class Contact
     }
 
     /**
-     * Returns Mautic Contact Session DI
+     * Sert Contact IP address
+     *
+     * @param string $ip
+     *
+     * @return Contact
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+    }
+
+    /**
+     * Returns Mautic Contact Session ID
      *
      * @return string|null
      */
     public function getSessionId()
     {
-        return $this->sessionId;
-    }
-
-    /**
-     * Gets Contact ID from $_COOKIE
-     *
-     * @return int|null
-     */
-    public function getIdFromCookie()
-    {
-        if (isset($_COOKIE['mtc_id'])) {
-            return (int) $_COOKIE['mtc_id'];
-        } elseif (isset($_COOKIE['mautic_session_id'])) {
-            $mauticSessionId = $_COOKIE['mautic_session_id'];
-            if (isset($_COOKIE[$mauticSessionId])) {
-                return (int) $_COOKIE[$mauticSessionId];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns Mautic session ID if it exists in the cookie
-     *
-     * @return string|null
-     */
-    public function getMauticSessionIdFromCookie()
-    {
-        if (isset($_COOKIE['mautic_session_id'])) {
-            return $_COOKIE['mautic_session_id'];
-        }
-
-        if (isset($_COOKIE['mtc_sid'])) {
-            return $_COOKIE['mtc_sid'];
-        }
-
-        return null;
+        return $this->cookie->getSessionId();
     }
 
     /**
@@ -128,31 +97,9 @@ class Contact
      *
      * @return Contact
      */
-    public function setSessionIdCookie($sessionId)
+    public function setSessionId($sessionId)
     {
-        $this->sessionId = $sessionId;
-        $_COOKIE['mautic_session_id'] = $sessionId;
-        $_COOKIE['mtc_sid'] = $sessionId;
-
-        return $this;
-    }
-
-    /**
-     * Set Mautic Contact ID to global cookie
-     *
-     * @param int $contactId
-     *
-     * @return Contact
-     */
-    public function setIdCookie($contactId)
-    {
-        $this->id = $contactId;
-
-        $_COOKIE['mtc_id'] = $this->id;
-
-        if ($this->sessionId) {
-            $_COOKIE[$this->sessionId] = $this->id;
-        }
+        $this->cookie->setSessionId($sessionId);
 
         return $this;
     }

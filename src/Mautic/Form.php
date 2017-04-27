@@ -43,7 +43,7 @@ class Form
      */
     public function submit(array $data)
     {
-        $originalCookie = $_COOKIE;
+        $originalCookie = $this->mautic->getCookie()->getSuperGlobalCookie();
         $response = [];
         $request = $this->prepareRequest($data);
 
@@ -60,8 +60,7 @@ class Form
         }
 
         if (isset($request['cookie'])) {
-            $ckfile = tempnam(sys_get_temp_dir(), 'mauticcookie');
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $ckfile);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $this->mautic->getCookie()->createCookieFile());
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -76,16 +75,16 @@ class Form
         $contact = $this->mautic->getContact();
 
         if ($sessionId = $this->getSessionIdFromHeader($response['header'])) {
-            $contact->setSessionIdCookie($sessionId);
+            $contact->setSessionId($sessionId);
         }
 
         if ($contactId = $this->getContactIdFromHeader($response['header'], $sessionId)) {
-            $contact->setIdCookie($contactId);
+            $contact->setId($contactId);
         }
 
         return [
             'original_cookie' => $originalCookie,
-            'new_cookie' => $_COOKIE,
+            'new_cookie' => $this->mautic->getCookie()->toArray(),
             'request' => $request,
             'response' => $response,
         ];
@@ -166,7 +165,7 @@ class Form
             $request['header'][] = "X-Forwarded-For: $contactIp";
         }
 
-        if ($sessionId = $contact->getMauticSessionIdFromCookie()) {
+        if ($sessionId = $contact->getSessionId()) {
             $request['header'][] = "Cookie: mautic_session_id=$sessionId";
         }
 

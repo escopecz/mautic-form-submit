@@ -4,11 +4,15 @@ namespace Escopecz\MauticFormSubmit\Test\Mautic;
 
 use Escopecz\MauticFormSubmit\Mautic;
 use Escopecz\MauticFormSubmit\Mautic\Contact;
+use Escopecz\MauticFormSubmit\Mautic\Cookie;
 
 class ContactTest extends \PHPUnit_Framework_TestCase
 {
     private $baseUrl = 'https://mymautic.com';
 
+    /**
+     * @runInSeparateProcess
+     */
     function test_get_contact_from_mautic()
     {
         $mautic = new Mautic($this->baseUrl);
@@ -19,65 +23,65 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $contact->getIp());
     }
 
-    function test_get_id()
+    /**
+     * @runInSeparateProcess
+     */
+    function test_set_get_id()
     {
-        $contactId = 2342;
-        $contact = new Contact($contactId);
+        $contactId = 452;
+        $mautic = new Mautic($this->baseUrl);
+        $contact = $mautic->getContact();
+        $contact->setId($contactId);
 
         $this->assertSame($contactId, $contact->getId());
-        $this->assertSame('', $contact->getIp());
     }
 
-    function test_get_ip()
+    function test_set_get_ip()
     {
-        $contactIp = '345.2.2.2';
-        $contact = new Contact(null, $contactIp);
+        $ip = '345.2.2.2';
+        $mautic = new Mautic($this->baseUrl);
+        $contact = $mautic->getContact();
+        $contact->setIp($ip);
 
-        $this->assertSame($contactIp, $contact->getIp());
-        $this->assertSame(0, $contact->getId());
+        $this->assertSame($ip, $contact->getIp());
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     function test_get_id_from_mtc_id_cookie()
     {
         $contactId = 4344;
-        $_COOKIE['mtc_id'] = $contactId;
-        $contact = new Contact;
+        $cookie = new Cookie;
+        $cookie->setContactId($contactId);
+        $contact = new Contact($cookie);
 
         $this->assertSame($contactId, $contact->getId());
-        unset($_COOKIE['mtc_id']);
+        $cookie->unset(Cookie::MTC_ID);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     function test_get_id_from_mautic_session_id_cookie()
     {
-        $contactId = '4344';
+        $contactId = 4344;
         $sessionId = 'slk3jhkn3gkn23lkgn3lkgn';
-        $_COOKIE[$sessionId] = $contactId;
-        $_COOKIE['mautic_session_id'] = $sessionId;
-        $contact = new Contact;
+        $cookie = new Cookie;
+        $cookie->setSessionId($sessionId)
+            ->setContactId($contactId);
+        $contact = new Contact($cookie);
 
         $this->assertEquals($contactId, $contact->getId());
-        unset($_COOKIE['mautic_session_id']);
-        unset($_COOKIE[$sessionId]);
-    }
-
-    function test_get_id_from_cookie_method()
-    {
-        $contact = new Contact;
-
-        $this->assertSame(null, $contact->getIdFromCookie());
-
-        $contactId = 4344;
-        $_COOKIE['mtc_id'] = $contactId;
-
-        $this->assertSame($contactId, $contact->getIdFromCookie());
-        unset($_COOKIE['mtc_id']);
+        $cookie->unsetSessionId()
+            ->unsetContactId();
     }
 
     function test_get_ip_from_server()
     {
         $contactIp = '345.2.2.2';
         $_SERVER['REMOTE_ADDR'] = $contactIp;
-        $contact = new Contact;
+        $contact = new Contact(new Cookie);
 
         $this->assertSame($contactIp, $contact->getIp());
         unset($_SERVER['REMOTE_ADDR']);
@@ -85,7 +89,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 
     function test_get_ip_from_server_method()
     {
-        $contact = new Contact;
+        $contact = new Contact(new Cookie);
 
         $this->assertSame('', $contact->getIpFromServer());
 
@@ -96,54 +100,38 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         unset($_SERVER['REMOTE_ADDR']);
     }
 
-    function test_get_mautic_session_id_from_cookie()
-    {
-        $contact = new Contact;
-
-        $this->assertSame(null, $contact->getMauticSessionIdFromCookie());
-
-        $sid = 'kjsfk3j2jnfl2kj3rl2kj';
-        $_COOKIE['mautic_session_id'] = $sid;
-
-        $this->assertSame($sid, $contact->getMauticSessionIdFromCookie());
-        unset($_COOKIE['mautic_session_id']);
-
-        $this->assertSame(null, $contact->getMauticSessionIdFromCookie());
-
-        $_COOKIE['mtc_sid'] = $sid;
-        $this->assertSame($sid, $contact->getMauticSessionIdFromCookie());
-        unset($_COOKIE['mtc_sid']);
-    }
-
+    /**
+     * @runInSeparateProcess
+     */
     function test_set_session_id_to_cookie()
     {
-        $contact = new Contact;
+        $cookie = new Cookie;
+        $contact = new Contact($cookie);
 
-        $this->assertSame(null, $contact->getMauticSessionIdFromCookie());
+        $this->assertSame(null, $contact->getSessionId());
 
         $sessionId = 'sadfasfd98fuasofuasd9f87asfo';
-        $contact->setSessionIdCookie($sessionId);
+        $contact->setSessionId($sessionId);
 
-        $this->assertSame($sessionId, $contact->getMauticSessionIdFromCookie());
         $this->assertSame($sessionId, $contact->getSessionId());
-        $this->assertSame($sessionId, $_COOKIE['mautic_session_id']);
-        $this->assertSame($sessionId, $_COOKIE['mtc_sid']);
-        unset($_COOKIE['mautic_session_id']);
-        unset($_COOKIE['mtc_sid']);
+        $cookie->unsetSessionId();
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     function test_set_contact_id_to_cookie()
     {
-        $contact = new Contact;
+        $cookie = new Cookie;
+        $contact = new Contact($cookie);
 
-        $this->assertSame(null, $contact->getIdFromCookie());
+        $this->assertSame(0, $contact->getId());
 
         $contactId = 2332;
-        $contact->setIdCookie($contactId);
+        $contact->setId($contactId);
 
-        $this->assertSame($contactId, $contact->getIdFromCookie());
         $this->assertSame($contactId, $contact->getId());
-        $this->assertSame($contactId, $_COOKIE['mtc_id']);
-        unset($_COOKIE['mtc_id']);
+        $this->assertEquals($contactId, $cookie->getContactId());
+        $cookie->unsetContactId();
     }
 }

@@ -49,13 +49,13 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 
     function test_get_id_from_mautic_session_id_cookie()
     {
-        $contactId = 4344;
+        $contactId = '4344';
         $sessionId = 'slk3jhkn3gkn23lkgn3lkgn';
         $_COOKIE[$sessionId] = $contactId;
         $_COOKIE['mautic_session_id'] = $sessionId;
         $contact = new Contact;
 
-        $this->assertSame($contactId, $contact->getId());
+        $this->assertEquals($contactId, $contact->getId());
         unset($_COOKIE['mautic_session_id']);
         unset($_COOKIE[$sessionId]);
     }

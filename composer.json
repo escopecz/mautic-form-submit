@@ -21,7 +21,8 @@
     "require-dev": {
         "phpunit/phpunit" : "^5.7",
         "scrutinizer/ocular": "~1.1",
-        "squizlabs/php_codesniffer": "~2.3"
+        "squizlabs/php_codesniffer": "~2.3",
+        "phpstan/phpstan": "^0.6.4"
     },
     "autoload": {
         "psr-4": {
@@ -36,6 +37,7 @@
     "scripts": {
         "test": "phpunit",
         "test-coverage": "phpdbg -qrr vendor/bin/phpunit",
-        "cs": "phpcs --standard=psr2 src/"
+        "cs": "phpcs --standard=psr2 src/",
+        "phpstan": "vendor/bin/phpstan analyse src tests -l 5"
     }
 }

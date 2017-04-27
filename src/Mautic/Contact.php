@@ -146,7 +146,7 @@ class Contact
      */
     public function setIdCookie($contactId)
     {
-        $this->id = (int) $contactId;
+        $this->id = $contactId;
 
         $_COOKIE['mtc_id'] = $this->id;
 

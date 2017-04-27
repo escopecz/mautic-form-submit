@@ -30,7 +30,7 @@ class Form
     public function __construct(Mautic $mautic, $id)
     {
         $this->mautic = $mautic;
-        $this->id = (int) $id;
+        $this->id = $id;
     }
 
     /**

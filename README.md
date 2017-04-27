@@ -42,6 +42,7 @@ For working example see the `examples` dir.
 ```
 composer test
 composer cs
+composer phpstan
 ```
 
 ### Current status

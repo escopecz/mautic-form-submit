@@ -66,6 +66,8 @@ class Form
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         list($header, $content) = explode("\r\n\r\n", curl_exec($ch), 2);
         $response['header'] = $header;
         $response['content'] = htmlentities($content);

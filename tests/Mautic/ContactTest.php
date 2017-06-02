@@ -57,7 +57,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         $contact = new Contact($cookie);
 
         $this->assertSame($contactId, $contact->getId());
-        $cookie->unset(Cookie::MTC_ID);
+        $cookie->clear(Cookie::MTC_ID);
     }
 
     /**

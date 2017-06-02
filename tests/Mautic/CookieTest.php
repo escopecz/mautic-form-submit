@@ -38,14 +38,14 @@ class CookieTest extends \PHPUnit_Framework_TestCase
         $cookie->set(Cookie::MAUTIC_SESSION_ID, $sid);
 
         $this->assertSame($sid, $cookie->getSessionId());
-        $cookie->unset(Cookie::MAUTIC_SESSION_ID);
+        $cookie->clear(Cookie::MAUTIC_SESSION_ID);
 
         $this->assertSame(null, $cookie->getSessionId());
 
         $cookie->set(Cookie::MTC_SID, $sid);
         $this->assertSame($sid, $cookie->getSessionId());
 
-        $cookie->unset(Cookie::MTC_SID);
+        $cookie->clear(Cookie::MTC_SID);
         $this->assertSame(null, $cookie->getSessionId());
     }
 

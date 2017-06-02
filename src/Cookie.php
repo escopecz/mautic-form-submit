@@ -71,7 +71,7 @@ class Cookie
      *
      * @return Cookie
      */
-    public function unset($key)
+    public function clear($key)
     {
         setcookie($key, '', time() - 3600);
         unset($_COOKIE[$key]);

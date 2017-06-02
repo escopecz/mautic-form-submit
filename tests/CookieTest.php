@@ -22,7 +22,7 @@ class CookieTest extends \PHPUnit_Framework_TestCase
         $this->assertSame((string) $val, $cookie->get($key));
         $this->assertSame($val, $cookie->getInt($key));
 
-        $cookie->unset($key);
+        $cookie->clear($key);
 
         $this->assertSame(0, $cookie->getInt($key));
     }

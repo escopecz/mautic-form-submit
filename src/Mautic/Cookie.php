@@ -72,10 +72,10 @@ class Cookie extends StandardCookie
      */
     public function unsetContactId()
     {
-        $this->unset(self::MTC_ID);
+        $this->clear(self::MTC_ID);
 
         if ($sessionId = $this->getSessionId()) {
-            $this->unset($sessionId);
+            $this->clear($sessionId);
         }
 
         return $this;
@@ -121,8 +121,8 @@ class Cookie extends StandardCookie
      */
     public function unsetSessionId()
     {
-        $this->unset(self::MAUTIC_SESSION_ID);
-        $this->unset(self::MTC_SID);
+        $this->clear(self::MAUTIC_SESSION_ID);
+        $this->clear(self::MTC_SID);
 
         return $this;
     }

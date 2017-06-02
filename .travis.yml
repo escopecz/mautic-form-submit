@@ -13,15 +13,30 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install:
+  # turn off XDebug
+  - phpenv config-rm xdebug.ini || return
+
+  # install dependencies in parallel
+  - travis_retry composer global require hirak/prestissimo
+
+  # install PHPSTAN globally for PHP 7+
+  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then composer global require phpstan/phpstan-shim; fi
+
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - travis_retry composer install --no-interaction
   - COMPOSER_PROCESS_TIMEOUT=0 composer test-server > /dev/null 2>&1 &
 
 script:
+  # Run code standards analysis
   - vendor/bin/phpcs --standard=psr2 src/
+
+  # Run PHPUnit with test coverage report
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
-  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then vendor/bin/phpstan analyse src tests -l 5; fi
+
+  # Run PHPSTAN analysis for PHP 7+
+  - if [[ $TRAVIS_PHP_VERSION != '5.6' ]]; then ~/.composer/vendor/phpstan/phpstan-shim/phpstan.phar analyse src tests -l 5; fi
 
 after_script:
   - if [[ $TRAVIS_PHP_VERSION != '7.1' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi

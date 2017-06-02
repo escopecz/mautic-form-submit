@@ -21,15 +21,20 @@ composer require escopecz/mautic-form-submit
 ## Usage
 
 ```php
+// Require Composer autoloader
 require __DIR__.'/vendor/autoload.php';
 
-$mautic = new \Escopecz\MauticFormSubmit\Mautic('https://mymautic.com');
+// Define the namespace of the Mautic object
+use Escopecz\MauticFormSubmit\Mautic;
+
+// Instantiate the Mautic object with the base URL where the Mautic runs
+$mautic = new Mautic('https://mymautic.com');
+
+// Create a new instance of the Form object with the form ID 342
 $form = $mautic->getForm(342);
-$result = $form->submit(
-    [
-        'f_email' => 'john@doe.email',
-    ]
-);
+
+// Submit provided data array to the form 342
+$result = $form->submit(['f_email' => 'john@doe.email']);
 ```
 
 - The integer passed to the `getForm()` method must be ID of the Mautic form.
@@ -44,6 +49,8 @@ composer test
 composer cs
 composer phpstan
 ```
+
+PHPSTAN must be installed globally (`composer global require phpstan/phpstan-shim`) and will run only on PHP 7+.
 
 ### Current status
 

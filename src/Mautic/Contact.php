@@ -129,7 +129,7 @@ class Contact
                     // Multiple IPs are present so use the last IP which should be
                     // the most reliable IP that last connected to the proxy
                     $ips = explode(',', $ip);
-                    array_walk($ips, create_function('&$val', '$val = trim($val);'));
+                    $ips = array_map('trim', $ips);
                     $ip = end($ips);
                 }
                 $ip = trim($ip);

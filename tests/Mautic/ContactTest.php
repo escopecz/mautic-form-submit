@@ -100,6 +100,19 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         unset($_SERVER['REMOTE_ADDR']);
     }
 
+    function test_get_ip_from_server_method_when_multiple_ips()
+    {
+        $contact = new Contact(new Cookie);
+
+        $this->assertSame('', $contact->getIpFromServer());
+
+        $_SERVER['REMOTE_ADDR'] = '222.333.444.4., 555.666.777.7, 345.2.2.2';
+
+        // The last IP from the list is the right one
+        $this->assertSame('345.2.2.2', $contact->getIpFromServer());
+        unset($_SERVER['REMOTE_ADDR']);
+    }
+
     /**
      * @runInSeparateProcess
      */

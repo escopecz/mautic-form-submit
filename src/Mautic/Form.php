@@ -41,7 +41,7 @@ class Form
      *
      * @return array
      */
-    public function submit(array $data)
+    public function submit(array $data, array $curlOpts = [])
     {
         $originalCookie = $this->mautic->getCookie()->getSuperGlobalCookie();
         $response = [];
@@ -66,6 +66,11 @@ class Form
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
+
+        foreach($curlOpts as $key => $value) {
+            curl_setopt($ch, $key, $value);
+        }
+
         list($header, $content) = explode("\r\n\r\n", curl_exec($ch), 2);
         $response['header'] = $header;
         $response['content'] = htmlentities($content);

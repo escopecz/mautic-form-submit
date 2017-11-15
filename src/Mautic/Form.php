@@ -67,7 +67,7 @@ class Form
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
 
-        foreach($curlOpts as $key => $value) {
+        foreach ($curlOpts as $key => $value) {
             curl_setopt($ch, $key, $value);
         }
 

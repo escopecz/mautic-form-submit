@@ -34,14 +34,16 @@ class Form
     }
 
     /**
-     * Submit the $data array to the Mautic form
+     * Submit the $data array to the Mautic form, using the optional $curlOpts
+     * array to override curl settings
      * Returns array containing info about the request, response and cookie
      *
      * @param  array  $data
+     * @param  array  $curlOpts
      *
      * @return array
      */
-    public function submit(array $data)
+    public function submit(array $data, array $curlOpts = [])
     {
         $originalCookie = $this->mautic->getCookie()->getSuperGlobalCookie();
         $response = [];
@@ -66,6 +68,11 @@ class Form
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_HEADER, 1);
+
+        foreach ($curlOpts as $key => $value) {
+            curl_setopt($ch, $key, $value);
+        }
+
         list($header, $content) = explode("\r\n\r\n", curl_exec($ch), 2);
         $response['header'] = $header;
         $response['content'] = htmlentities($content);

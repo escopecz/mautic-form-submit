@@ -34,10 +34,12 @@ class Form
     }
 
     /**
-     * Submit the $data array to the Mautic form
+     * Submit the $data array to the Mautic form, using the optional $curlOpts
+     * array to override curl settings
      * Returns array containing info about the request, response and cookie
      *
      * @param  array  $data
+     * @param  array  $curlOpts
      *
      * @return array
      */

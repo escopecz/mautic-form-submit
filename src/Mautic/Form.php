@@ -170,6 +170,7 @@ class Form
 
         if ($contactIp = $contact->getIp()) {
             $request['header'][] = "X-Forwarded-For: $contactIp";
+            $request['header'][] = "Client-Ip: $contactIp";
         }
 
         if ($sessionId = $contact->getSessionId()) {

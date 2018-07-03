@@ -13,13 +13,13 @@ class Controller
             $_SESSION[$key] = $val;
         }
 
-        if (isset($_POST['f_email']) && isset($_POST['mautic_base_url']) && isset($_POST['form_id'])) {
+        if (isset($_POST['email_label']) && isset($_POST[$_POST['email_label']]) && isset($_POST['mautic_base_url']) && isset($_POST['form_id'])) {
             $mautic = new Mautic($_POST['mautic_base_url']);
             $form = $mautic->getForm($_POST['form_id']);
 
             $info = $form->submit(
                 [
-                    'f_email' => $_POST['f_email'],
+                    $_POST['email_label'] => $_POST[$_POST['email_label']],
                 ]
             );
 

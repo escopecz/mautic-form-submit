@@ -23,12 +23,16 @@ $configured = (isset($_SESSION['mautic_base_url']) && isset($_SESSION['form_id']
                 <label for="form_id">Form ID:</label>
                 <input type="number" id="form_id" name="form_id" value="<?php echo isset($_SESSION['form_id']) ? $_SESSION['form_id'] : '' ?>" required>
             </div>
+            <div>
+                <label for="form_id">Form Email Field Label:</label>
+                <input type="text" id="email_label" name="email_label" value="<?php echo isset($_SESSION['email_label']) ? $_SESSION['email_label'] : 'email' ?>" required>
+            </div>
             <hr>
             <?php if ($configured) : ?>
             <h3>The actual Mautic form values</h3>
             <div>
-                <label for="mail">E-mail:</label>
-                <input type="email" id="f_email" name="f_email" value="<?php echo isset($_SESSION['f_email']) ? $_SESSION['f_email'] : '' ?>" required>
+                <label for="<?php echo $_SESSION['email_label'] ?>">E-mail:</label>
+                <input type="text" id="<?php echo $_SESSION['email_label'] ?>" name="<?php echo $_SESSION['email_label'] ?>" value="<?php echo isset($_SESSION[$_SESSION['email_label']]) ? $_SESSION[$_SESSION['email_label']] : '' ?>" required>
             </div>
             <?php else : ?>
                 Fill in the form and submit. The values will be saved to session and you'll be able to fill in the email.

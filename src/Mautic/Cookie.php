@@ -14,6 +14,13 @@ class Cookie extends StandardCookie
      *
      * @var string
      */
+    const MAUTIC_DEVICE_ID = 'mautic_device_id';
+
+    /**
+     * Holds Mautic session ID defined by PHP
+     *
+     * @var string
+     */
     const MAUTIC_SESSION_ID = 'mautic_session_id';
 
     /**
@@ -110,6 +117,20 @@ class Cookie extends StandardCookie
     {
         $this->set(self::MAUTIC_SESSION_ID, $sessionId);
         $this->set(self::MTC_SID, $sessionId);
+
+        return $this;
+    }
+
+    /**
+     * Set Mautic Device ID cookies
+     *
+     * @param string $deviceId
+     *
+     * @return Cookie
+     */
+    public function setDeviceId($deviceId)
+    {
+        $this->set(self::MAUTIC_DEVICE_ID, $deviceId);
 
         return $this;
     }

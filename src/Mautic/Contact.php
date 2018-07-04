@@ -105,6 +105,20 @@ class Contact
     }
 
     /**
+     * Set Mautic device ID to global cookie
+     *
+     * @param string $deviceId
+     *
+     * @return Contact
+     */
+    public function setDeviceId($deviceId)
+    {
+        $this->cookie->setDeviceId($deviceId);
+
+        return $this;
+    }
+
+    /**
      * Guesses IP address from $_SERVER
      *
      * @return string

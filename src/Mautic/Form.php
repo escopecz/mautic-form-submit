@@ -3,6 +3,8 @@
 namespace Escopecz\MauticFormSubmit\Mautic;
 
 use Escopecz\MauticFormSubmit\Mautic;
+use Escopecz\MauticFormSubmit\Mautic\Cookie;
+use Escopecz\MauticFormSubmit\HttpHeader;
 
 /**
  * Mautic form
@@ -80,12 +82,20 @@ class Form
         curl_close($ch);
 
         $contact = $this->mautic->getContact();
+        $httpHeader = new HttpHeader($response['header']);
+        $sessionId = $httpHeader->getCookieValue(Cookie::MAUTIC_SESSION_ID);
+        $deviceId = $httpHeader->getCookieValue(Cookie::MAUTIC_DEVICE_ID);
+        $contactId = $httpHeader->getCookieValue($sessionId);
 
-        if ($sessionId = $this->getSessionIdFromHeader($response['header'])) {
+        if ($sessionId) {
             $contact->setSessionId($sessionId);
         }
 
-        if ($contactId = $this->getContactIdFromHeader($response['header'], $sessionId)) {
+        if ($deviceId) {
+            $contact->setDeviceId($deviceId);
+        }
+
+        if ($contactId) {
             $contact->setId($contactId);
         }
 
@@ -95,51 +105,6 @@ class Form
             'request' => $request,
             'response' => $response,
         ];
-    }
-
-    /**
-     * Finds the session ID hash in the response header
-     *
-     * @param  string $headers
-     *
-     * @return string|null
-     */
-    public function getSessionIdFromHeader($headers)
-    {
-        if (!$headers) {
-            return null;
-        }
-
-        preg_match("/mautic_session_id=(.+?);/", $headers, $matches);
-
-        if (isset($matches[1])) {
-            return $matches[1];
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds the Mautic Contact ID hash in the response header
-     *
-     * @param  string $headers
-     * @param  string $sessionId
-     *
-     * @return int|null
-     */
-    public function getContactIdFromHeader($headers, $sessionId)
-    {
-        if (!$headers || !$sessionId) {
-            return null;
-        }
-
-        preg_match("/$sessionId=(.+?);/", $headers, $matches);
-
-        if (isset($matches[1])) {
-            return (int) $matches[1];
-        }
-
-        return null;
     }
 
     /**
@@ -175,6 +140,7 @@ class Form
 
         if ($sessionId = $contact->getSessionId()) {
             $request['header'][] = "Cookie: mautic_session_id=$sessionId";
+            $request['header'][] = "Cookie: mautic_device_id=$sessionId";
         }
 
         if (isset($_SERVER['HTTP_REFERER'])) {

@@ -28,7 +28,7 @@ class HttpHeader
 
     /**
      * @param string $key
-     * 
+     *
      * @return string|null
      */
     public function getHeaderValue($key)
@@ -38,7 +38,7 @@ class HttpHeader
 
     /**
      * @param string $key
-     * 
+     *
      * @return string|null
      */
     public function getCookieValue($key)

@@ -48,7 +48,6 @@ class Form
     public function submit(array $data, array $curlOpts = [])
     {
         $originalCookie = $this->mautic->getCookie()->getSuperGlobalCookie();
-        $response = [];
         $request = $this->prepareRequest($data);
 
         $ch = curl_init($request['url']);
@@ -75,9 +74,8 @@ class Form
             curl_setopt($ch, $key, $value);
         }
 
-        list($header, $content) = explode("\r\n\r\n", curl_exec($ch), 2);
-        $response['header'] = $header;
-        $response['content'] = htmlentities($content);
+        $result = curl_exec($ch);
+        $response = $this->prepareResponse($result);
         $response['info'] = curl_getinfo($ch);
         curl_close($ch);
 
@@ -117,7 +115,7 @@ class Form
     public function prepareRequest(array $data)
     {
         $contact = $this->mautic->getContact();
-        $request = ['header'];
+        $request = ['header' => []];
 
         $data['formId'] = $this->id;
 
@@ -150,6 +148,29 @@ class Form
         $request['query'] = http_build_query($request['data']);
 
         return $request;
+    }
+
+    /**
+     * Process the result and split into headers and content
+     *
+     * @param string|bool $result
+     * @return array
+     */
+    public function prepareResponse($result)
+    {
+        $response = ['header' => null, 'content' => null];
+        $d = "\r\n\r\n"; // Headers and content delimiter
+
+        if (is_string($result) && strpos($result, $d) !== false) {
+            list($header, $content) = explode($d, $result, 2);
+            if (stripos($header, '100 Continue') !== false && strpos($content, $d) !== false) {
+                list($header, $content) = explode($d, $content, 2);
+            }
+            $response['header'] = $header;
+            $response['content'] = htmlentities($content);
+        }
+
+        return $response;
     }
 
     /**

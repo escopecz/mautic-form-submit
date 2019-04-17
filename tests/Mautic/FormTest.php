@@ -47,6 +47,44 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('', $request['data']['mauticform']['return']);
     }
 
+    /**
+     * @dataProvider response_result_provider
+     */
+    function test_prepare_response($result, $expectedHeader, $expectedContentType)
+    {
+        $mautic = new Mautic($this->baseUrl);
+        $formId = 3434;
+        $form = $mautic->getForm($formId);
+
+        $response = $form->prepareResponse($result);
+
+        $this->assertSame($expectedHeader, $response['header']);
+        $this->assertInternalType($expectedContentType, $response['content']);
+    }
+
+    function response_result_provider()
+    {
+        $continue = "HTTP/1.1 100 Continue";
+        $header = "HTTP/1.1 302 Found\r
+Date: Wed, 17 Apr 2019 11:41:44 GMT\r
+Content-Type: text/html; charset=UTF-8\r
+Location: ...";
+        $content = '<html></html>';
+
+        $d = "\r\n\r\n"; // Delimiter between headers and content
+
+        return [
+            // Normal response: headers + content
+            [$header . $d . $content, $header, 'string'],
+
+            // Continue response: 100 Continue + headers + content
+            [$continue . $d . $header . $d . $content, $header, 'string'],
+
+            // cURL returning false because of failure to execute request
+            [false, null, 'null'],
+        ];
+    }
+
     function test_get_url()
     {
         $mautic = new Mautic($this->baseUrl);

@@ -96,7 +96,7 @@ class Form
         }
 
         if ($contactId) {
-            $contact->setId($contactId);
+            $contact->setId((int)$contactId);
         }
 
         return [

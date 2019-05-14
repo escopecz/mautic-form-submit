@@ -27,6 +27,13 @@ require __DIR__.'/vendor/autoload.php';
 // Define the namespace of the Mautic object
 use Escopecz\MauticFormSubmit\Mautic;
 
+// Define the namespace of the Mautic configuration object
+use Escopecz\MauticFormSubmit\Mautic\Config;
+
+// Declare the configuration object and set Curl verbose logging to true
+$config = new Config;
+$config->setCurlVerbose(1);
+
 // Instantiate the Mautic object with the base URL where the Mautic runs
 $mautic = new Mautic('https://mymautic.com');
 

@@ -5,6 +5,7 @@ namespace Escopecz\MauticFormSubmit;
 use Escopecz\MauticFormSubmit\Mautic\Form;
 use Escopecz\MauticFormSubmit\Mautic\Contact;
 use Escopecz\MauticFormSubmit\Mautic\Cookie as MauticCookie;
+use Escopecz\MauticFormSubmit\Mautic\Config;
 
 /**
  * Mautic representation
@@ -33,15 +34,23 @@ class Mautic
     protected $cookie;
 
     /**
+     * Mautic Configuration
+     *
+     * @var MauticConfig
+     */
+    protected $config;
+
+    /**
      * Constructor
      *
      * @param string $baseUrl
      */
-    public function __construct($baseUrl)
+    public function __construct($baseUrl, $config)
     {
         $this->baseUrl = rtrim(trim($baseUrl), '/');
         $this->cookie = new MauticCookie;
-        $this->contact = new Contact($this->cookie);
+	$this->contact = new Contact($this->cookie);
+	$this->config = $config;
     }
 
     /**
@@ -98,5 +107,15 @@ class Mautic
     public function getCookie()
     {
         return $this->cookie;
+    }
+
+    /**
+     * Returns Mautic Configuration representation object
+     *
+     * @return MauticConfig
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 }

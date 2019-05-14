@@ -5,7 +5,7 @@ namespace Escopecz\MauticFormSubmit\Mautic;
 /**
  * Mautic Configuration
  */
-class Config
+class MauticConfig
 {
     /**
      * Curl verbose logging option

@@ -3,7 +3,7 @@
 namespace Escopecz\MauticFormSubmit\Mautic;
 
 /**
- * Configuration object for Mautic form submission. 
+ * Configuration object for Mautic form submission.
  */
 class Config
 {
@@ -12,7 +12,7 @@ class Config
      *
      * @var bool
      */
-    protected $curlVerbose = true; 
+    protected $curlVerbose = true;
 
     /**
      * Returns Curl verbose logging option

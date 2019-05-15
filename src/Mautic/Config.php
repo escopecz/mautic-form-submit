@@ -12,7 +12,7 @@ class Config
      *
      * @var bool
      */
-    protected $curlVerbose = 1; 
+    protected $curlVerbose = true; 
 
     /**
      * Returns Curl verbose logging option

@@ -49,8 +49,8 @@ class Mautic
     {
         $this->baseUrl = rtrim(trim($baseUrl), '/');
         $this->cookie = new MauticCookie;
-	$this->contact = new Contact($this->cookie);
-	$this->config = $config ?: new Config;
+        $this->contact = new Contact($this->cookie);
+        $this->config = $config ?: new Config;
     }
 
     /**

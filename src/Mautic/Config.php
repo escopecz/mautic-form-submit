@@ -3,7 +3,7 @@
 namespace Escopecz\MauticFormSubmit\Mautic;
 
 /**
- * Mautic Configuration
+ * Configuration object for Mautic form submission. 
  */
 class Config
 {

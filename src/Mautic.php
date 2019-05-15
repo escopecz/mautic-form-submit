@@ -36,7 +36,7 @@ class Mautic
     /**
      * Mautic Configuration
      *
-     * @var MauticConfig
+     * @var Config
      */
     protected $config;
 
@@ -45,12 +45,12 @@ class Mautic
      *
      * @param string $baseUrl
      */
-    public function __construct($baseUrl, $config)
+    public function __construct($baseUrl, Config $config = null)
     {
         $this->baseUrl = rtrim(trim($baseUrl), '/');
         $this->cookie = new MauticCookie;
 	$this->contact = new Contact($this->cookie);
-	$this->config = $config;
+	$this->config = $config ?: new Config;
     }
 
     /**
@@ -112,7 +112,7 @@ class Mautic
     /**
      * Returns Mautic Configuration representation object
      *
-     * @return MauticConfig
+     * @return Config
      */
     public function getConfig()
     {

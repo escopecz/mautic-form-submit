@@ -10,9 +10,9 @@ class Config
     /**
      * Curl verbose logging option
      *
-     * @var int
+     * @var bool
      */
-    protected $curlVerbose; 
+    protected $curlVerbose = 1; 
     
     /**
      * Constructor
@@ -27,7 +27,7 @@ class Config
     /**
      * Returns Curl verbose logging option
      *
-     * @return int
+     * @return bool
      */
     public function getCurlVerbose()
     {
@@ -37,7 +37,7 @@ class Config
     /**
      * Set Curl verbose logging option
      *
-     * @param int $curlVerbose
+     * @param bool $curlVerbose
      *
      * @return Config
      */

@@ -16,11 +16,12 @@ class Controller
 
 	if (isset($_POST['email_label']) && isset($_POST[$_POST['email_label']]) && isset($_POST['mautic_base_url']) && isset($_POST['form_id'])) {
 		
-	    //Setting Curl verbose logging to true
+	    // It's optional to create a Config DTO object and pass it to the Mautic object.
+	    // For example to set Curl verbose logging to true.
 	    $config = new Config;
-	    $config->setCurlVerbose(1);
+	    $config->setCurlVerbose(true);
 
-            $mautic = new Mautic($_POST['mautic_base_url']);
+            $mautic = new Mautic($_POST['mautic_base_url'], $config);
             $form = $mautic->getForm($_POST['form_id']);
 
             $info = $form->submit(

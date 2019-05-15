@@ -30,9 +30,10 @@ use Escopecz\MauticFormSubmit\Mautic;
 // Define the namespace of the Mautic configuration object
 use Escopecz\MauticFormSubmit\Mautic\Config;
 
-// Declare the configuration object and set Curl verbose logging to true
+// It's optional to declare the configuration object to change some default values.
+// For example to disable Curl verbose logging.
 $config = new Config;
-$config->setCurlVerbose(1);
+$config->setCurlVerbose(true);
 
 // Instantiate the Mautic object with the base URL where the Mautic runs
 $mautic = new Mautic('https://mymautic.com');

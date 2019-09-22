@@ -4,6 +4,7 @@
 require __DIR__.'/../../vendor/autoload.php';
 
 use Escopecz\MauticFormSubmit\Mautic;
+use Escopecz\MauticFormSubmit\Mautic\Config;
 
 class Controller
 {
@@ -13,8 +14,14 @@ class Controller
             $_SESSION[$key] = $val;
         }
 
-        if (isset($_POST['email_label']) && isset($_POST[$_POST['email_label']]) && isset($_POST['mautic_base_url']) && isset($_POST['form_id'])) {
-            $mautic = new Mautic($_POST['mautic_base_url']);
+	if (isset($_POST['email_label']) && isset($_POST[$_POST['email_label']]) && isset($_POST['mautic_base_url']) && isset($_POST['form_id'])) {
+		
+	    // It's optional to create a Config DTO object and pass it to the Mautic object.
+	    // For example to set Curl verbose logging to true.
+	    $config = new Config;
+	    $config->setCurlVerbose(true);
+
+            $mautic = new Mautic($_POST['mautic_base_url'], $config);
             $form = $mautic->getForm($_POST['form_id']);
 
             $info = $form->submit(

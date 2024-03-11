@@ -49,6 +49,8 @@ class Form
     {
         $originalCookie = $this->mautic->getCookie()->getSuperGlobalCookie();
         $request = $this->prepareRequest($data);
+        
+		//file_put_contents(__DIR__.'/log-post.txt', print_r($request,1), FILE_APPEND); // увидим куда обращается и что отправляет - какой mtc_id
 
         $ch = curl_init($request['url']);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -63,7 +65,8 @@ class Form
         }
 
         if (isset($request['cookie'])) {
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $this->mautic->getCookie()->createCookieFile());
+            // curl_setopt($ch, CURLOPT_COOKIEFILE, $this->mautic->getCookie()->createCookieFile());
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $data['COOKIES'] );
         }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -127,9 +130,9 @@ class Form
         $request['url'] = $this->getUrl();
         $request['data'] = ['mauticform' => $data];
 
-        if ($contactId = $contact->getId()) {
-            $request['data']['mtc_id'] = $contactId;
-        }
+        //if ($contactId = $contact->getId()) {
+            $request['data']['mtc_id'] =  $data['mtc_id'];  //$contactId;
+        //}
 
         if ($contactIp = $contact->getIp()) {
             $request['header'][] = "X-Forwarded-For: $contactIp";
@@ -137,8 +140,8 @@ class Form
         }
 
         if ($sessionId = $contact->getSessionId()) {
-            $request['header'][] = "Cookie: mautic_session_id=$sessionId";
-            $request['header'][] = "Cookie: mautic_device_id=$sessionId";
+//            $request['header'][] = "Cookie: mautic_session_id=$sessionId";
+//            $request['header'][] = "Cookie: mautic_device_id=$sessionId";
         }
 
         if (isset($_SERVER['HTTP_REFERER'])) {
@@ -146,6 +149,11 @@ class Form
         }
 
         $request['query'] = http_build_query($request['data']);
+
+        
+//        file_put_contents('request_log_form_id.log', json_encode($request)."\n", FILE_APPEND);
+
+        $request['header'][] = "Cookie: ". $data['COOKIES'];
 
         return $request;
     }

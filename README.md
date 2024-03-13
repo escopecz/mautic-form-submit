@@ -21,8 +21,17 @@ composer require escopecz/mautic-form-submit
 ## Usage
 
 ```php
+//basic form data
+$email		= $_REQUEST['email'] ?? $_REQUEST['Email'] ?? $_REQUEST['E-mail'] ?? $_REQUEST['E-MAIL']; // mauticform_input_mkregistraciaslp_email
+$name		  = $_REQUEST['name'] ?? $_REQUEST['Name']; // mauticform_input_mkregistraciaslp_name
+$phone		= $_REQUEST['phone'] ?? $_REQUEST['Phone']; // mauticform_input_mkregistraciaslp_phone
+$form_id	= $_REQUEST['form_id'] ?? $_REQUEST['Form_id']; // mauticform_input_mkregistraciaslp_form_id
+if (is_null($form_id)) {$form_id  = 1;} // if form_id is empty then use the ьфгешс form with id=1
+$form   = $mautic->getForm($form_id);
+
 // Require Composer autoloader
 require __DIR__.'/vendor/autoload.php';
+// or  require __DIR__.'/../../vendor/autoload.php'; if you place it not in the root folder, but for example in the /docroot/webhook/ folder
 
 // Define the namespace of the Mautic object
 use Escopecz\MauticFormSubmit\Mautic;
@@ -38,11 +47,11 @@ $config->setCurlVerbose(true);
 // Instantiate the Mautic object with the base URL where the Mautic runs
 $mautic = new Mautic('https://mymautic.com');
 
-// Create a new instance of the Form object with the form ID 342
-$form = $mautic->getForm(342);
+// Create a new instance of the Form object with with form id passed from forms
+$form   = $mautic->getForm($form_id);
 
 // Submit provided data array to the form 342
-$result = $form->submit(['f_email' => 'john@doe.email']);
+$result = $form->submit(['COOKIES' => $_REQUEST['COOKIES'], 'email' => $email, 'phone' => $phone, 'f_name' => $name,]);
 ```
 
 - The integer passed to the `getForm()` method must be ID of the Mautic form.

@@ -26,7 +26,7 @@ $email		= $_REQUEST['email'] ?? $_REQUEST['Email'] ?? $_REQUEST['E-mail'] ?? $_R
 $name		  = $_REQUEST['name'] ?? $_REQUEST['Name']; // mauticform_input_mkregistraciaslp_name
 $phone		= $_REQUEST['phone'] ?? $_REQUEST['Phone']; // mauticform_input_mkregistraciaslp_phone
 $form_id	= $_REQUEST['form_id'] ?? $_REQUEST['Form_id']; // mauticform_input_mkregistraciaslp_form_id
-if (is_null($form_id)) {$form_id  = 1;} // if form_id is empty then use the ьфгешс form with id=1
+if (is_null($form_id)) {$form_id  = 1;} // if form_id is empty then use the 1'st Mautic form
 $form   = $mautic->getForm($form_id);
 
 // Require Composer autoloader

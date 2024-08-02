@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Test\Mautic;
 
 use Escopecz\MauticFormSubmit\Mautic;
 use Escopecz\MauticFormSubmit\Mautic\Contact;
 use Escopecz\MauticFormSubmit\Mautic\Cookie;
+use PHPUnit\Framework\TestCase;
 
-class ContactTest extends \PHPUnit_Framework_TestCase
+
+class ContactTest extends TestCase
 {
-    private $baseUrl = 'https://mymautic.com';
+    private string $baseUrl = 'https://mymautic.com';
 
     /**
      * @runInSeparateProcess
      */
-    function test_get_contact_from_mautic()
+    function test_get_contact_from_mautic(): void
     {
         $mautic = new Mautic($this->baseUrl);
         $contact = $mautic->getContact();
@@ -26,7 +30,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_set_get_id()
+    function test_set_get_id(): void
     {
         $contactId = 452;
         $mautic = new Mautic($this->baseUrl);
@@ -36,7 +40,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($contactId, $contact->getId());
     }
 
-    function test_set_get_ip()
+    function test_set_get_ip(): void
     {
         $ip = '345.2.2.2';
         $mautic = new Mautic($this->baseUrl);
@@ -49,7 +53,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_get_id_from_mtc_id_cookie()
+    function test_get_id_from_mtc_id_cookie(): void
     {
         $contactId = 4344;
         $cookie = new Cookie;
@@ -63,7 +67,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_get_id_from_mautic_session_id_cookie()
+    function test_get_id_from_mautic_session_id_cookie(): void
     {
         $contactId = 4344;
         $sessionId = 'slk3jhkn3gkn23lkgn3lkgn';
@@ -77,7 +81,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
             ->unsetContactId();
     }
 
-    function test_get_ip_from_server()
+    function test_get_ip_from_server(): void
     {
         $contactIp = '345.2.2.2';
         $_SERVER['REMOTE_ADDR'] = $contactIp;
@@ -87,7 +91,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         unset($_SERVER['REMOTE_ADDR']);
     }
 
-    function test_get_ip_from_server_method()
+    function test_get_ip_from_server_method(): void
     {
         $contact = new Contact(new Cookie);
 
@@ -100,7 +104,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
         unset($_SERVER['REMOTE_ADDR']);
     }
 
-    function test_get_ip_from_server_method_when_multiple_ips()
+    function test_get_ip_from_server_method_when_multiple_ips(): void
     {
         $contact = new Contact(new Cookie);
 
@@ -116,7 +120,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_set_session_id_to_cookie()
+    function test_set_session_id_to_cookie(): void
     {
         $cookie = new Cookie;
         $contact = new Contact($cookie);
@@ -133,7 +137,7 @@ class ContactTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_set_contact_id_to_cookie()
+    function test_set_contact_id_to_cookie(): void
     {
         $cookie = new Cookie;
         $contact = new Contact($cookie);

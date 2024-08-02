@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Test\Mautic;
 
 use Escopecz\MauticFormSubmit\Mautic;
 use Escopecz\MauticFormSubmit\Mautic\Form;
+use PHPUnit\Framework\TestCase;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+
+class FormTest extends TestCase
 {
-    private $baseUrl = 'https://mymautic.com';
+    private string $baseUrl = 'https://mymautic.com';
 
-    function test_get_id_int_standalone()
+    function test_get_id_int_standalone(): void
     {
         $mautic = new Mautic($this->baseUrl);
         $formId = 3434;
@@ -18,7 +22,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($formId, $form->getId());
     }
 
-    function test_get_id_int_in_mautic_object()
+    function test_get_id_int_in_mautic_object(): void
     {
         $mautic = new Mautic($this->baseUrl);
         $formId = 3434;
@@ -27,7 +31,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($formId, $form->getId());
     }
 
-    function test_prepare_request()
+    function test_prepare_request(): void
     {
         $mautic = new Mautic($this->baseUrl);
         $formId = 3434;
@@ -50,7 +54,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider response_result_provider
      */
-    function test_prepare_response($result, $expectedHeader, $expectedContentType)
+    function test_prepare_response($result, $expectedHeader, $expectedContentType): void
     {
         $mautic = new Mautic($this->baseUrl);
         $formId = 3434;
@@ -85,7 +89,7 @@ Location: ...";
         ];
     }
 
-    function test_get_url()
+    function test_get_url(): void
     {
         $mautic = new Mautic($this->baseUrl);
         $formId = 3434;

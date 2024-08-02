@@ -1,67 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit;
 
-/**
- * HTTP Header Helper
- */
 class HttpHeader
 {
-    /**
-     * Key-valye paries of headers
-     *
-     * @var array
-     */
-    private $headers = [];
+    private array $headers = [];
 
-    /**
-     * Key-valye paries of cookies
-     *
-     * @var array
-     */
-    private $cookies = [];
+    private array $cookies = [];
 
     public function __construct($textHeaders)
     {
         $this->parse($textHeaders);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string|null
-     */
-    public function getHeaderValue($key)
+    public function getHeaderValue(string $key): ?string
     {
-        return isset($this->headers[$key]) ? $this->headers[$key] : null;
+        return $this->headers[$key] ?? null;
     }
 
-    /**
-     * @param string $key
-     *
-     * @return string|null
-     */
-    public function getCookieValue($key)
+    public function getCookieValue(?string $key): ?string
     {
-        return isset($this->cookies[$key]) ? $this->cookies[$key] : null;
+        return $this->cookies[$key] ?? null;
     }
 
     /**
      * Parse text headers and fills in cookies and headers properites
-     *
-     * @param string $headers
      */
-    private function parse($headers)
+    private function parse(string $headers): void
     {
         foreach (preg_split('/\r\n|\r|\n/', $headers) as $i => $line) {
             if ($i === 0) {
                 $this->headers['http_code'] = $line;
             } else {
-                list($key, $value) = explode(': ', $line);
+                [$key, $value] = explode(': ', $line);
 
                 if ($key === 'Set-Cookie') {
-                    list($textCookie) = explode(';', $value);
-                    list($cookieKey, $cookieValue) = explode('=', $textCookie);
+                    [$textCookie] = explode(';', $value);
+                    [$cookieKey, $cookieValue] = explode('=', $textCookie);
 
                     $this->cookies[$cookieKey] = $cookieValue;
                 } else {

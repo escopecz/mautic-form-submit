@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Test;
 
 use Escopecz\MauticFormSubmit\Cookie;
+use PHPUnit\Framework\TestCase;
 
-class CookieTest extends \PHPUnit_Framework_TestCase
+
+class CookieTest extends TestCase
 {
     /**
      * @runInSeparateProcess
      */
-    function test_set_get_unset()
+    function test_set_get_unset(): void
     {
         $cookie = new Cookie();
         $key = 'some_cookie';
@@ -30,7 +34,7 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_super_global_cookie()
+    function test_super_global_cookie(): void
     {
         $cookie = new Cookie();
 
@@ -40,7 +44,7 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_to_array()
+    function test_to_array(): void
     {
         $cookie = new Cookie();
         $key = 'some_cookie';
@@ -50,7 +54,7 @@ class CookieTest extends \PHPUnit_Framework_TestCase
         $this->assertSame([$key => $val], $cookie->toArray());
     }
 
-    function test_get_cookie_file()
+    function test_get_cookie_file(): void
     {
         $cookie = new Cookie;
         $file = $cookie->createCookieFile();

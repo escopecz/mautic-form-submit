@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Test\Mautic;
 
 use Escopecz\MauticFormSubmit\Mautic\Cookie;
+use PHPUnit\Framework\TestCase;
 
-class CookieTest extends \PHPUnit_Framework_TestCase
+class CookieTest extends TestCase
 {
     /**
      * @runInSeparateProcess
      */
-    function test_set_get_unset_contact_id()
+    function test_set_get_unset_contact_id(): void
     {
         $cookie = new Cookie;
 
@@ -28,7 +31,7 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_set_get_unset_session_id()
+    function test_set_get_unset_session_id(): void
     {
         $cookie = new Cookie;
 
@@ -52,7 +55,7 @@ class CookieTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      */
-    function test_set_get_unset_session_id2()
+    function test_set_get_unset_session_id2(): void
     {
         $cookie = new Cookie;
 

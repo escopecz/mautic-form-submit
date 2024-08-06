@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit;
 
 use Escopecz\MauticFormSubmit\Mautic\Form;
@@ -7,45 +9,20 @@ use Escopecz\MauticFormSubmit\Mautic\Contact;
 use Escopecz\MauticFormSubmit\Mautic\Cookie as MauticCookie;
 use Escopecz\MauticFormSubmit\Mautic\Config;
 
-/**
- * Mautic representation
- */
 class Mautic
 {
-    /**
-     * Mautic base (root) URL
-     *
-     * @var string
-     */
-    protected $baseUrl;
 
-    /**
-     * Mautic Contact
-     *
-     * @var Contact
-     */
-    protected $contact;
+    protected string $baseUrl;
 
-    /**
-     * Mautic Contact Cookie
-     *
-     * @var MauticCookie
-     */
-    protected $cookie;
+    protected Contact $contact;
 
-    /**
-     * Mautic Configuration
-     *
-     * @var Config
-     */
-    protected $config;
 
-    /**
-     * Constructor
-     *
-     * @param string $baseUrl
-     */
-    public function __construct($baseUrl, Config $config = null)
+    protected MauticCookie $cookie;
+
+
+    protected Config $config;
+
+    public function __construct(string $baseUrl, Config $config = null)
     {
         $this->baseUrl = rtrim(trim($baseUrl), '/');
         $this->cookie = new MauticCookie;
@@ -53,68 +30,34 @@ class Mautic
         $this->config = $config ?: new Config;
     }
 
-    /**
-     * Returns Mautic's base URL
-     *
-     * @return string
-     */
-    public function getBaseUrl()
+    public function getBaseUrl(): string
     {
         return $this->baseUrl;
     }
 
-    /**
-     * Returns new Mautic Form representation object
-     *
-     * @param  int $id
-     *
-     * @return Form
-     */
-    public function getForm($id)
+    public function getForm(int $id): Form
     {
         return new Form($this, $id);
     }
 
-    /**
-     * Sets the Mautic Contact if you want to replace the default one
-     *
-     * @param Contact $contact
-     *
-     * @return Mautic
-     */
-    public function setContact(Contact $contact)
+    public function setContact(Contact $contact): static
     {
         $this->contact = $contact;
 
         return $this;
     }
 
-    /**
-     * Returns Mautic Contact representation object
-     *
-     * @return Contact
-     */
-    public function getContact()
+    public function getContact(): Contact
     {
         return $this->contact;
     }
 
-    /**
-     * Returns Mautic Cookie representation object
-     *
-     * @return MauticCookie
-     */
-    public function getCookie()
+    public function getCookie(): MauticCookie
     {
         return $this->cookie;
     }
 
-    /**
-     * Returns Mautic Configuration representation object
-     *
-     * @return Config
-     */
-    public function getConfig()
+    public function getConfig(): Config
     {
         return $this->config;
     }

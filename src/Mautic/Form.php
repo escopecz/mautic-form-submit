@@ -1,51 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Mautic;
 
 use Escopecz\MauticFormSubmit\Mautic;
-use Escopecz\MauticFormSubmit\Mautic\Cookie;
 use Escopecz\MauticFormSubmit\HttpHeader;
 
-/**
- * Mautic form
- */
 class Form
 {
-    /**
-     * @var Mautic
-     */
-    protected $mautic;
 
-    /**
-     * Form ID
-     *
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * Constructor
-     *
-     * @param Mautic $mautic
-     * @param int    $id
-     */
-    public function __construct(Mautic $mautic, $id)
-    {
-        $this->mautic = $mautic;
-        $this->id = $id;
+    public function __construct(
+        protected Mautic $mautic,
+        protected int    $id
+    ) {
     }
 
     /**
      * Submit the $data array to the Mautic form, using the optional $curlOpts
      * array to override curl settings
      * Returns array containing info about the request, response and cookie
-     *
-     * @param  array  $data
-     * @param  array  $curlOpts
-     *
-     * @return array
      */
-    public function submit(array $data, array $curlOpts = [])
+    public function submit(array $data, array $curlOpts = []): array
     {
         $originalCookie = $this->mautic->getCookie()->getSuperGlobalCookie();
         $request = $this->prepareRequest($data);
@@ -107,12 +83,8 @@ class Form
 
     /**
      * Prepares data for CURL request based on provided form data, $_COOKIE and $_SERVER
-     *
-     * @param  array $data
-     *
-     * @return array
      */
-    public function prepareRequest(array $data)
+    public function prepareRequest(array $data): array
     {
         $contact = $this->mautic->getContact();
         $request = ['header' => []];
@@ -152,19 +124,16 @@ class Form
 
     /**
      * Process the result and split into headers and content
-     *
-     * @param string|bool $result
-     * @return array
      */
-    public function prepareResponse($result)
+    public function prepareResponse(string|bool $result): array
     {
         $response = ['header' => null, 'content' => null];
         $d = "\r\n\r\n"; // Headers and content delimiter
 
-        if (is_string($result) && strpos($result, $d) !== false) {
-            list($header, $content) = explode($d, $result, 2);
-            if (stripos($header, '100 Continue') !== false && strpos($content, $d) !== false) {
-                list($header, $content) = explode($d, $content, 2);
+        if (is_string($result) && str_contains($result, $d)) {
+            [$header, $content] = explode($d, $result, 2);
+            if (stripos($header, '100 Continue') !== false && str_contains($content, $d)) {
+                [$header, $content] = explode($d, $content, 2);
             }
             $response['header'] = $header;
             $response['content'] = htmlentities($content);
@@ -175,20 +144,13 @@ class Form
 
     /**
      * Builds the form URL
-     *
-     * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return sprintf('%s/form/submit?formId=%d', $this->mautic->getBaseUrl(), $this->id);
     }
 
-    /**
-     * Returns the Form ID
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }

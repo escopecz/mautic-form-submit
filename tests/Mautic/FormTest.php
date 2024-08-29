@@ -71,7 +71,7 @@ class FormTest extends TestCase
                 $this->assertNull($response['content']);
                 break;
             default:
-                throw new InvalidArgumentException("Nieznany typ: $expectedContentType");
+                throw new \InvalidArgumentException("Nieznany typ: $expectedContentType");
         }
     }
 

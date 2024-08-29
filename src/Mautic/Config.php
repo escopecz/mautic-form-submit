@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Mautic;
 
 /**
@@ -9,29 +11,21 @@ class Config
 {
     /**
      * Curl verbose logging option
-     *
-     * @var bool
      */
-    protected $curlVerbose = true;
+    protected bool $curlVerbose = true;
 
     /**
      * Returns Curl verbose logging option
-     *
-     * @return bool
      */
-    public function getCurlVerbose()
+    public function getCurlVerbose(): bool
     {
         return $this->curlVerbose;
     }
-    
+
     /**
      * Set Curl verbose logging option
-     *
-     * @param bool $curlVerbose
-     *
-     * @return Config
      */
-    public function setCurlVerbose($curlVerbose)
+    public function setCurlVerbose(bool $curlVerbose): static
     {
         $this->curlVerbose = $curlVerbose;
 

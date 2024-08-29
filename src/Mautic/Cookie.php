@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Mautic;
 
 use Escopecz\MauticFormSubmit\Cookie as StandardCookie;
@@ -11,40 +13,30 @@ class Cookie extends StandardCookie
 {
     /**
      * Holds Mautic session ID defined by PHP
-     *
-     * @var string
      */
-    const MAUTIC_DEVICE_ID = 'mautic_device_id';
+    public const MAUTIC_DEVICE_ID = 'mautic_device_id';
 
     /**
      * Holds Mautic session ID defined by PHP
-     *
-     * @var string
      */
-    const MAUTIC_SESSION_ID = 'mautic_session_id';
+    public const MAUTIC_SESSION_ID = 'mautic_session_id';
 
     /**
      * Holds Mautic session ID defined by JS
-     *
-     * @var string
      */
-    const MTC_SID = 'mtc_sid';
+    public const MTC_SID = 'mtc_sid';
 
     /**
      * Holds Mautic Contact ID defined by JS
-     *
-     * @var string
      */
-    const MTC_ID = 'mtc_id';
+    public const MTC_ID = 'mtc_id';
 
     /**
      * Get Mautic Contact ID from Cookie
-     *
-     * @return int|null
      */
-    public function getContactId()
+    public function getContactId(): ?int
     {
-        if ($mtcId = $this->getInt(self::MTC_ID)) {
+        if (($mtcId = $this->getInt(self::MTC_ID)) !== 0) {
             return $mtcId;
         } elseif ($mauticSessionId = $this->getSessionId()) {
             return $this->getInt($mauticSessionId);
@@ -56,12 +48,8 @@ class Cookie extends StandardCookie
     /**
      * Set Mautic Contact ID cookies
      * Note: Call setMauticSessionId prior to this
-     *
-     * @param int $contactId
-     *
-     * @return Cookie
      */
-    public function setContactId($contactId)
+    public function setContactId(int $contactId): static
     {
         $this->set(self::MTC_ID, $contactId);
 
@@ -73,11 +61,9 @@ class Cookie extends StandardCookie
     }
 
     /**
-     * Unet Mautic Contact ID cookies
-     *
-     * @return Cookie
+     * Unit Mautic Contact ID cookies
      */
-    public function unsetContactId()
+    public function unsetContactId(): static
     {
         $this->clear(self::MTC_ID);
 
@@ -90,10 +76,8 @@ class Cookie extends StandardCookie
 
     /**
      * Returns Mautic session ID if it exists in the cookie
-     *
-     * @return string|null
      */
-    public function getSessionId()
+    public function getSessionId(): ?string
     {
         if ($mauticSessionId = $this->get(self::MAUTIC_SESSION_ID)) {
             return $mauticSessionId;
@@ -108,12 +92,8 @@ class Cookie extends StandardCookie
 
     /**
      * Set Mautic Session ID cookies
-     *
-     * @param string $sessionId
-     *
-     * @return Cookie
      */
-    public function setSessionId($sessionId)
+    public function setSessionId(string $sessionId): static
     {
         $this->set(self::MAUTIC_SESSION_ID, $sessionId);
         $this->set(self::MTC_SID, $sessionId);
@@ -123,12 +103,8 @@ class Cookie extends StandardCookie
 
     /**
      * Set Mautic Device ID cookies
-     *
-     * @param string $deviceId
-     *
-     * @return Cookie
      */
-    public function setDeviceId($deviceId)
+    public function setDeviceId(string $deviceId): static
     {
         $this->set(self::MAUTIC_DEVICE_ID, $deviceId);
 
@@ -137,10 +113,8 @@ class Cookie extends StandardCookie
 
     /**
      * Unset Mautic Session ID cookies
-     *
-     * @return Cookie
      */
-    public function unsetSessionId()
+    public function unsetSessionId(): static
     {
         $this->clear(self::MAUTIC_SESSION_ID);
         $this->clear(self::MTC_SID);

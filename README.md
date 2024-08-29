@@ -50,6 +50,12 @@ $result = $form->submit(['f_email' => 'john@doe.email']);
 
 For working example see the `examples` dir.
 
+## Run project
+```
+ddev start 
+```
+Project url: https://mautic-form-submit.ddev.site/
+
 ## Testing
 
 ```
@@ -57,8 +63,6 @@ composer test
 composer cs
 composer phpstan
 ```
-
-PHPSTAN must be installed globally (`composer global require phpstan/phpstan-shim`) and will run only on PHP 7+.
 
 ### Current status
 

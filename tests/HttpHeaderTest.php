@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Test;
 
 use Escopecz\MauticFormSubmit\HttpHeader;
+use PHPUnit\Framework\TestCase;
 
-class HttpHeaderTest extends \PHPUnit_Framework_TestCase
+
+class HttpHeaderTest extends TestCase
 {
-    private $testTextHeader = 'HTTP/1.1 302 Found
+    private string $testTextHeader = 'HTTP/1.1 302 Found
 Date: Wed, 04 Jul 2018 08:33:39 GMT
 Server: Apache/2.4.33 (Unix) OpenSSL/1.0.2o PHP/7.1.16
 X-Powered-By: PHP/7.1.16
@@ -24,12 +28,12 @@ X-Debug-Token-Link: http://mautic.test/index_dev.php/_profiler/152d17
 Content-Length: 588
 Content-Type: text/html; charset=UTF-8';
 
-    function test_get_base_url()
+    function test_get_base_url(): void
     {
-        $headerHelper = new HttpHeader($this->testTextHeader);
-        $this->assertEquals('6txmz3mu2dslmkhrera668e', $headerHelper->getCookieValue('mautic_session_id'));
-        $this->assertEquals('18061', $headerHelper->getCookieValue('mtc_id'));
-        $this->assertEquals('18061', $headerHelper->getCookieValue('6txmz3mu2dslmkhrera668e'));
-        $this->assertEquals('Apache/2.4.33 (Unix) OpenSSL/1.0.2o PHP/7.1.16', $headerHelper->getHeaderValue('Server'));
+        $httpHeader = new HttpHeader($this->testTextHeader);
+        $this->assertEquals('6txmz3mu2dslmkhrera668e', $httpHeader->getCookieValue('mautic_session_id'));
+        $this->assertEquals('18061', $httpHeader->getCookieValue('mtc_id'));
+        $this->assertEquals('18061', $httpHeader->getCookieValue('6txmz3mu2dslmkhrera668e'));
+        $this->assertEquals('Apache/2.4.33 (Unix) OpenSSL/1.0.2o PHP/7.1.16', $httpHeader->getHeaderValue('Server'));
     }
 }

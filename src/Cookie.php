@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit;
 
 /**
@@ -12,35 +14,25 @@ class Cookie
      * because when cookie is set with setCookie
      * it's accessible on the next script run only,
      * not at the same run.
-     *
-     * @var array
      */
-    protected $store = [];
+    protected array $store = [];
 
     /**
      * Get cookie with FILTER_SANITIZE_STRING
-     *
-     * @param  string $key
-     *
-     * @return string|null
      */
-    public function get($key)
+    public function get(string $key): string|false|null
     {
         if (isset($this->store[$key])) {
-            return filter_var($this->store[$key], FILTER_SANITIZE_STRING);
+            return filter_var($this->store[$key], FILTER_SANITIZE_SPECIAL_CHARS);
         }
 
-        return filter_input(INPUT_COOKIE, $key, FILTER_SANITIZE_STRING);
+        return filter_input(INPUT_COOKIE, $key, FILTER_SANITIZE_SPECIAL_CHARS);
     }
 
     /**
      * Get cookie with FILTER_SANITIZE_NUMBER_INT
-     *
-     * @param  string $key
-     *
-     * @return int|null
      */
-    public function getInt($key)
+    public function getInt(string $key): int
     {
         if (isset($this->store[$key])) {
             return (int) filter_var($this->store[$key], FILTER_SANITIZE_NUMBER_INT);
@@ -49,63 +41,39 @@ class Cookie
         return (int) filter_input(INPUT_COOKIE, $key, FILTER_SANITIZE_NUMBER_INT);
     }
 
-    /**
-     * Set a cookie value
-     *
-     * @param string $key
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function set($key, $value)
+    public function set(string $key, mixed $value): bool
     {
         $this->store[$key] = $value;
 
-        return setcookie($key, $value);
+        return setcookie($key, (string) $value);
     }
 
-    /**
-     * Unset the key from the cookie
-     *
-     * @param string $key
-     *
-     * @return Cookie
-     */
-    public function clear($key)
+    public function clear(string $key): static
     {
-        setcookie($key, '', time() - 3600);
+        setcookie($key, '', ['expires' => time() - 3600]);
         unset($_COOKIE[$key]);
         unset($this->store[$key]);
 
         return $this;
     }
 
-    /**
-     * Returns $_COOKIE
-     *
-     * @return array
-     */
-    public function getSuperGlobalCookie()
+    public function getSuperGlobalCookie(): array
     {
         return $_COOKIE;
     }
 
     /**
      * Return all cookies as array merged with current state
-     *
-     * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array_merge($this->getSuperGlobalCookie(), $this->store);
     }
 
     /**
      * Creates unique cookie file in system tmp dir and returns absolute path to it.
-     *
-     * @return string|false
      */
-    public function createCookieFile()
+    public function createCookieFile(): string|false
     {
         return tempnam(sys_get_temp_dir(), 'mauticcookie');
     }

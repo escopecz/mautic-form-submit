@@ -1,117 +1,67 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Escopecz\MauticFormSubmit\Mautic;
 
-use Escopecz\MauticFormSubmit\Mautic\Cookie;
-
-/**
- * Mautic Contact
- */
 class Contact
 {
     /**
      * Mautic contact IP address
-     *
-     * @var string
      */
-    protected $ip;
-
-    /**
-     * Mautic Cookie
-     *
-     * @var Cookie
-     */
-    protected $cookie;
+    protected string $ip;
 
     /**
      * Constructor
-     *
-     * @param Cookie $cookie
      */
-    public function __construct(Cookie $cookie)
-    {
-        $this->cookie = $cookie;
+    public function __construct(
+        protected Cookie $cookie
+    ) {
         $this->ip = $this->getIpFromServer();
     }
 
     /**
      * Returns Contact ID
-     *
-     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return (int) $this->cookie->getContactId();
     }
 
     /**
      * Set Mautic Contact ID to global cookie
-     *
-     * @param int $contactId
-     *
-     * @return Contact
      */
-    public function setId($contactId)
+    public function setId(int $contactId): static
     {
         $this->cookie->setContactId($contactId);
 
         return $this;
     }
 
-    /**
-     * Returns Contact IP address
-     *
-     * @return string|null
-     */
-    public function getIp()
+    public function getIp(): ?string
     {
         return $this->ip;
     }
 
-    /**
-     * Sert Contact IP address
-     *
-     * @param string $ip
-     *
-     * @return Contact
-     */
-    public function setIp($ip)
+    public function setIp(string $ip): void
     {
         $this->ip = $ip;
     }
 
-    /**
-     * Returns Mautic Contact Session ID
-     *
-     * @return string|null
-     */
-    public function getSessionId()
+    public function getSessionId(): ?string
     {
         return $this->cookie->getSessionId();
     }
 
-    /**
-     * Set Mautic session ID to global cookie
-     *
-     * @param string $sessionId
-     *
-     * @return Contact
-     */
-    public function setSessionId($sessionId)
+
+    public function setSessionId(string $sessionId): static
     {
         $this->cookie->setSessionId($sessionId);
 
         return $this;
     }
 
-    /**
-     * Set Mautic device ID to global cookie
-     *
-     * @param string $deviceId
-     *
-     * @return Contact
-     */
-    public function setDeviceId($deviceId)
+    public function setDeviceId(string $deviceId): static
     {
         $this->cookie->setDeviceId($deviceId);
 
@@ -120,10 +70,8 @@ class Contact
 
     /**
      * Guesses IP address from $_SERVER
-     *
-     * @return string
      */
-    public function getIpFromServer()
+    public function getIpFromServer(): string
     {
         $ip = '';
         $ipHolders = [
@@ -136,17 +84,17 @@ class Contact
             'REMOTE_ADDR'
         ];
 
-        foreach ($ipHolders as $key) {
-            if (!empty($_SERVER[$key])) {
-                $ip = $_SERVER[$key];
-                if (strpos($ip, ',') !== false) {
+        foreach ($ipHolders as $ipHolder) {
+            if (!empty($_SERVER[$ipHolder])) {
+                $ip = $_SERVER[$ipHolder];
+                if (str_contains((string) $ip, ',')) {
                     // Multiple IPs are present so use the last IP which should be
                     // the most reliable IP that last connected to the proxy
-                    $ips = explode(',', $ip);
+                    $ips = explode(',', (string) $ip);
                     $ips = array_map('trim', $ips);
                     $ip = end($ips);
                 }
-                $ip = trim($ip);
+                $ip = trim((string) $ip);
                 break;
             }
         }

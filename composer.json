@@ -39,6 +39,6 @@
         "test": "phpunit",
         "test-coverage": "phpdbg -qrr vendor/bin/phpunit",
         "cs": "phpcs --standard=psr2 src/",
-        "phpstan": "~/.composer/vendor/phpstan/phpstan-shim/phpstan.phar analyse src tests -l 5"
+        "phpstan": "vendor/bin/phpstan analyse src tests -l 5"
     }
 }
